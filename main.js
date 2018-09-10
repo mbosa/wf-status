@@ -358,7 +358,6 @@ $(document).ready(function() {
     $(this).addClass('platform-active');
     platform = $(this).attr('id');
     url = 'https://api.warframestat.us/' + platform;
-    //url = 'http://127.0.0.1:3000/website/wf-status/example-' + platform + '.json';
     update();
   });
 
