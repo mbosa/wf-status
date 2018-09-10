@@ -2,8 +2,6 @@ $(document).ready(function() {
 
   let platform = 'pc';
   let url = 'https://api.warframestat.us/' + platform; // live
-  //let url = 'http://127.0.0.1:3000/website/wf-status/baro-example.json'; // baro ki'teer on pc example
-  //let url = 'http://127.0.0.1:3000/website/wf-status/example-' + platform + '.json'; //examples
   let status;
 
 
