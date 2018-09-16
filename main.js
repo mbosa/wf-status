@@ -6,11 +6,11 @@ $(document).ready(function() {
 
 
   //unit of measurement is ms
-  let _second = 1000;
-  let _minute = _second*60;
-  let _hour = _minute*60;
-  let _day = _hour*24;
-  let _week = _day*7;
+  const _second = 1000;
+  const _minute = _second*60;
+  const _hour = _minute*60;
+  const _day = _hour*24;
+  const _week = _day*7;
 
 
   // calculates how much time passed since the news
@@ -54,9 +54,9 @@ $(document).ready(function() {
       let seconds = Math.floor((distance % _minute) / _second);
 
       if (weeks){
-        $(id).html(weeks + "w " + days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+        $(id).html(weeks + "w " + days + "d " + hours + "h ");
       } else if (days) {
-        $(id).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s");
+        $(id).html(days + "d " + hours + "h " + minutes + "m ");
       } else if (hours) {
         $(id).html(hours + "h " + minutes + "m " + seconds + "s");
       } else if (minutes) {
@@ -68,15 +68,15 @@ $(document).ready(function() {
   }; // end countDown()
 
 
-  // killIntervals() clears any setInterval (and setTimeout) on the page (except everyMinute=setInterval(...) ); prevents the countdowns to overlap when the page is everyMinuted
+  // killIntervals() clears any setInterval (and setTimeout) on the page (except everyMinute=setInterval(...) ); prevents the countdowns to overlap when the page is updated
   // (thanks stackoverflow: https://stackoverflow.com/questions/3141064/how-to-stop-all-timeouts-and-intervals-using-javascript)
   // why does it work: each setTimout and setInterval is assigned an id in consecutive integers, so, when the function is called, killId has the higher id
-  function killIntervals(ms){
-    let killId = setTimeout(function() {
-      for (var i = killId; i > 1; i--) { // i=1 is everyMinute=setInterval(...) so i don't want to kill it; to kill everything, even everyMinute: i>0
-        clearInterval(i);
-      };
-    }, ms);
+  function killIntervals(){
+    const killId = setTimeout(function() {
+     for (let i = killId; i > everyMinute; i--) { // i=1 is everyMinute=setInterval(...) so i don't want to kill it; to kill everything, even everyMinute: i>0
+       clearInterval(i);
+     };
+   }, 100);
   };
 
 
@@ -85,13 +85,13 @@ $(document).ready(function() {
     let fomorianProgress = status.constructionProgress.fomorianProgress;
     let razorbackProgress = status.constructionProgress.razorbackProgress;
 
-    var fomoCanvas = document.getElementById('fomoCanvas');
-    var fomoCtx = fomoCanvas.getContext('2d');
+    let fomoCanvas = document.getElementById('fomoCanvas');
+    let fomoCtx = fomoCanvas.getContext('2d');
     let fomoWidth = fomoCanvas.width = 70;
     let fomoHeight = fomoCanvas.height = 70;
 
-    var razorCanvas = document.getElementById('razorCanvas');
-    var razorCtx = razorCanvas.getContext('2d');
+    let razorCanvas = document.getElementById('razorCanvas');
+    let razorCtx = razorCanvas.getContext('2d');
     let razorWidth = razorCanvas.width = 70;
     let razorHeight = razorCanvas.height = 70;
 
@@ -319,8 +319,8 @@ $(document).ready(function() {
 
     // compile spaces
     for (let i = 0; i < status.news.length; i++) {
-      $('#news' + i + ' .newsDate').html(newsDate(status.news[status.news.length- 1 - i].date));
-      $('#news' + i + ' .newsMessage a').html(status.news[status.news.length- 1 - i].message).attr('href', status.news[status.news.length- 1 - i].link);
+      $('#news' + i + ' .newsDate').html(newsDate(status.news[status.news.length - 1 - i].date));
+      $('#news' + i + ' .newsMessage a').html(status.news[status.news.length - 1 - i].message).attr('href', status.news[status.news.length- 1 - i].link);
     };
     // ---end news---
 
@@ -353,7 +353,7 @@ $(document).ready(function() {
 
   // change platform
   $('.platform a').click(function(){
-    killIntervals(100);
+    killIntervals();
     $('.platform a').removeClass('platform-active');
     $(this).addClass('platform-active');
     platform = $(this).attr('id');
@@ -390,7 +390,7 @@ $(document).ready(function() {
   function update(){
     $.getJSON(url, function(json){
       status = JSON.parse(JSON.stringify(json));
-      killIntervals(2000);
+      killIntervals(); // TODO: is this useful?
       compile(status);
     });
   };
@@ -399,7 +399,7 @@ $(document).ready(function() {
 
 
   // update the informations every 60 seconds (the json file is updated every 60 seconds)
-  let everyMinute = setInterval(function(){
+  const everyMinute = setInterval(function(){
     update();
   }, 60000);
 
