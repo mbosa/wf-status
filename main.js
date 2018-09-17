@@ -73,7 +73,7 @@ $(document).ready(function() {
   // why does it work: each setTimout and setInterval is assigned an id in consecutive integers, so, when the function is called, killId has the higher id
   function killIntervals(){
     const killId = setTimeout(function() {
-     for (let i = killId; i > everyMinute; i--) { // i=1 is everyMinute=setInterval(...) so i don't want to kill it; to kill everything, even everyMinute: i>0
+     for (let i = killId; i > everyMinute; i--) { // i don't want to clear everyminute(); to clear everything: i>0
        clearInterval(i);
      };
    }, 100);
